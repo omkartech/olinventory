@@ -255,4 +255,18 @@ class Model_orders extends CI_Model
 		}
 	}
 
+	public function getOrdersItems($orderId)
+	{
+		$sql = "SELECT p.product_name,s.size_name,c.color_name,o.qty,o.rate,o.amount FROM orders_item o join product p ON o.product_id = p.product_id join color c ON o.color_id = c.color_id join size s ON o.size_id = s.size_id where o.order_id = ".$orderId."";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+
+	public function getOrder($orderId)
+	{
+		$sql = "SELECT v.vendor_name,o.date_created,o.total_amount FROM orders o join vendor v ON o.vendor_id = v.vendor_id where o.id = ".$orderId."";
+		$query = $this->db->query($sql);
+		return $query->row_array();
+	}
+
 }

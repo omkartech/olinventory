@@ -1,6 +1,11 @@
 <?php
 
 defined('BASEPATH') OR exit('No direct script access allowed');
+include APPPATH . 'third_party/dompdf/lib/html5lib/Parser.php';
+include APPPATH . 'third_party/dompdf/src/Autoloader.php';
+
+Dompdf\Autoloader::register();
+use Dompdf\Dompdf;
 
 class Orders extends Admin_Controller 
 {
@@ -49,32 +54,14 @@ class Orders extends Admin_Controller
 			$date_time = $date;
 
 			// button
-			$buttons = '';
-
-			/*if(in_array('viewOrder', $this->permission)) {
-				$buttons .= '<a target="__blank" href="'.base_url('orders/printDiv/'.$value['id']).'" class="btn btn-default"><i class="fa fa-print"></i></a>';
-			}
-
-			if(in_array('updateOrder', $this->permission)) {
-				$buttons .= ' <a href="'.base_url('orders/update/'.$value['id']).'" class="btn btn-default"><i class="fa fa-pencil"></i></a>';
-			}
-
-			if(in_array('deleteOrder', $this->permission)) {
-				$buttons .= ' <button type="button" class="btn btn-default" onclick="removeFunc('.$value['id'].')" data-toggle="modal" data-target="#removeModal"><i class="fa fa-trash"></i></button>';
-			}
-
-			if($value['paid_status'] == 1) {
-				$paid_status = '<span class="label label-success">Paid</span>';	
-			}
-			else {
-				$paid_status = '<span class="label label-warning">Not Paid</span>';
-			}*/
+			$buttons = ' <a target="_blank" class="btn btn-default" href="orders/pdf/'.$value['id'].'"><i class="fa fa-file-pdf-o"></i></a>';
 
 			$result['data'][$key] = array(
 				$value['vendor_name'],
 				$count_total_item,
 				$value['total_amount'],
-				$date_time
+				$date_time,
+				$buttons
 			);
 		} // /foreach
 
@@ -389,6 +376,60 @@ class Orders extends Admin_Controller
         }
         $response = $this->model_orders->generateOrder($data, $totalAmount, $vendor_id);
         echo json_encode($data);
+    }
+
+    public function pdf($id){
+    	$order = $this->model_orders->getOrder($id);
+    	$res = $this->model_orders->getOrdersItems($id);
+    	$dompdf = new Dompdf();
+    	$data = "";
+    	for ($i=0; $i < count($res); $i++) { 
+    		$data.= '<tr>
+						<td style="padding: 5px;border: 1px solid #222020;">'.$res[$i]['product_name'].'</td>
+						<td style="padding: 5px;border: 1px solid #222020;">'.$res[$i]['size_name'].'</td>
+						<td style="padding: 5px;border: 1px solid #222020;">'.$res[$i]['color_name'].'</td>
+						<td style="padding: 5px;border: 1px solid #222020;" align="right">'.$res[$i]['rate'].'</td>
+						<td style="padding: 5px;border: 1px solid #222020;" align="right">'.$res[$i]['qty'].'</td>
+						<td style="padding: 5px;border: 1px solid #222020;" align="right">'.$res[$i]['amount'].'</td>
+					</tr>';
+    	}
+		$dompdf->loadHtml('<html lang=\"en\">
+		  <body>
+		    <table border="1" style="width:100%;border-collapse: collapse;">
+				<thead>
+					<tr>
+						<th style="padding: 15px;border: 1px solid #222020;" align="center" colspan="6">Customer Name : '.$order['vendor_name'].'<br>Date : '.date("d-m-Y", strtotime($order['date_created'])).'</th>
+					</tr>
+					<tr>
+						<th style="padding: 5px;border: 1px solid #222020;">Product</th>
+						<th style="padding: 5px;border: 1px solid #222020;">Size</th>
+						<th style="padding: 5px;border: 1px solid #222020;">Color</th>
+						<th style="padding: 5px;border: 1px solid #222020;">Rate</th>
+						<th style="padding: 5px;border: 1px solid #222020;">Qty</th>
+						<th style="padding: 5px;border: 1px solid #222020;">Amount</th>
+					</tr>
+				</thead>
+				<tbody>
+					'.$data.'
+					<tr>
+						<td style="padding: 5px;border: 1px solid #222020;" colspan="4"></td>
+						<td style="padding: 5px;border: 1px solid #222020;" colspan="1">Total</td>
+						<td style="padding: 5px;border: 1px solid #222020;" colspan="1" align="right">'.$order['total_amount'].'</td>
+					</tr>
+				</tbody>
+			</table>
+		  </body>
+		</html>');
+
+		// (Optional) Setup the paper size and orientation
+		$dompdf->setPaper('A4', 'landscape');
+
+		// Render the HTML as PDF
+		$dompdf->render();
+
+		// Output the generated PDF to Browser
+		//$dompdf->stream("dompdf_out.pdf", array("Attachment" => false));
+		$dompdf->stream($order['vendor_name'].'-'.date("d-m-Y", strtotime($order['date_created'])).".pdf");
     }
 
 }
