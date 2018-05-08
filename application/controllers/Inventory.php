@@ -42,7 +42,7 @@ class Inventory extends Admin_Controller
             // button
             $buttons = '';
             
-            // $buttons .= '<a href="'.base_url('inventory/update/'.$value['inventory_id']).'" class="btn btn-default"><i class="fa fa-pencil"></i></a>';
+            $buttons .= '<a href="'.base_url('inventory/update/'.$value['inventory_id']).'" class="btn btn-default"><i class="fa fa-pencil"></i></a>';
          
             // $buttons .= ' <button type="button" class="btn btn-default" onclick="removeFunc('.$value['inventory_id'].')" data-toggle="modal" data-target="#removeModal"><i class="fa fa-trash"></i></button>';
             
@@ -61,7 +61,7 @@ class Inventory extends Admin_Controller
                 $uom_data['uom_name'],
                 $value['stock'],
                 $value['date_created'],
-				// $buttons
+				$buttons
 			);
 		} // /foreach
 
@@ -136,13 +136,14 @@ class Inventory extends Admin_Controller
         
         if ($this->form_validation->run() == TRUE) {
             // true case
-            
+            $finalStock = ($this->input->post('stock') + $this->input->post('new_stock'));
+
             $data = array(
                 'product_id' => $this->input->post('product_id'),
                 'size_id' => $this->input->post('size_id'),
                 'color_id' => $this->input->post('color_id'),
                 'uom_id' => $this->input->post('uom_id'),
-                'stock' => $this->input->post('stock'),
+                'stock' => $finalStock,
             );
 
             $update = $this->model_inventory->update($data, $inventory_id);
@@ -156,7 +157,10 @@ class Inventory extends Admin_Controller
             }
         }
         else {
-            $this->data['inventory'] = $this->model_inventory->getActiveInventory();           
+            $this->data['product'] = $this->model_products->getProductData();           
+            $this->data['size'] = $this->model_size->getSizeData();           
+            $this->data['color'] = $this->model_color->getColorData();           
+            $this->data['uom'] = $this->model_uom->getUomData();           
                      
             $inventory_data = $this->model_inventory->getInventoryData($inventory_id);
             $this->data['inventory_data'] = $inventory_data;

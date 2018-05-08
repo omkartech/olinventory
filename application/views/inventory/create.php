@@ -58,7 +58,7 @@
                   <label for="size">Size</label>
                   <select class="form-control select_group" id="size_id" name="size_id">
                     <?php foreach ($size as $k => $v): ?>
-                      <option value="<?php echo $v['size_id'].'|'.$v['size_name']; ?>"><?php echo $v['size_name']; ?></option>
+                      <option value="<?php echo $v['size_id']; ?>"><?php echo $v['size_name']; ?></option>
                     <?php endforeach ?>
                   </select>
                 </div>
@@ -67,7 +67,7 @@
                   <label for="color">Color</label>
                   <select class="form-control select_group" id="color_id" name="color_id">
                     <?php foreach ($color as $k => $v): ?>
-                      <option value="<?php echo $v['color_id'].'|'.$v['color_name']; ?>"><?php echo $v['color_name']; ?></option>
+                      <option value="<?php echo $v['color_id']; ?>"><?php echo $v['color_name']; ?></option>
                     <?php endforeach ?>
                   </select>
                 </div>
@@ -76,7 +76,7 @@
                   <label for="uom">UOM</label>
                   <select class="form-control select_group" id="uom_id" name="uom_id">
                     <?php foreach ($uom as $k => $v): ?>
-                      <option value="<?php echo $v['uom_id'].'|'.$v['uom_name']; ?>"><?php echo $v['uom_name']; ?></option>
+                      <option value="<?php echo $v['uom_id']; ?>"><?php echo $v['uom_name']; ?></option>
                     <?php endforeach ?>
                   </select>
                 </div>

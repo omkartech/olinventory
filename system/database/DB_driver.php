@@ -688,7 +688,17 @@ abstract class CI_DB_driver {
 				}
 
 				// Display errors
-				return $this->display_error(array('Error Number: '.$error['code'], $error['message'], $sql));
+				// echo $error['code'];exit(); 
+				if($error['code'] == 1062){
+					// echo "string";exit();
+					// return $this->display_error("Product stock already exists.");
+					// return $this->display_error(array('Error Number: '.$error['code'], 'Product stock already exists.'));
+					// $this->session->set_flashdata('errors', 'Error occurred!!');
+					redirect('inventory/create', 'refresh');
+					
+				} else {
+					return $this->display_error(array('Error Number: '.$error['code'], $error['message'], $sql));
+				}
 			}
 
 			return FALSE;

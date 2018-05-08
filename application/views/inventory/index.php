@@ -53,7 +53,7 @@
                 <th>UOM</th>
                 <th>Stock</th>
                 <th>Date Created</th>
-                <!-- <th>Action</th>   -->
+                <th>Action</th>  
               </tr>
               </thead>
 

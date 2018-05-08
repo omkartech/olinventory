@@ -47,7 +47,8 @@
 
                 <div class="form-group">
                   <label for="vendor">Vendor</label>
-                  <select class="form-control select_group" id="vendor_id" name="vendor_id">
+                  <select class="form-control select_group" id="vendor_id" name="vendor_id" style="width:100%">
+                    <option></option>
                     <?php foreach ($vendor as $k => $v): ?>
                       <option value="<?php echo $v['vendor_id'].'|'.$v['vendor_name']; ?>"><?php echo $v['vendor_name']; ?></option>
                     <?php endforeach ?>
