@@ -53,7 +53,7 @@
                       <option value="<?php echo $v['product_id']; ?>"<?php if($v['product_id'] == $product_data) { echo 'selected="selected"'; } ?>><?php echo $v['product_name']; ?></option>
                     <?php endforeach ?>
                   </select>
-                  <input type="hidden" name="product_id" value="<?php echo $v['product_id'];?>" />
+                  <input type="hidden" name="product_id" value="<?php echo $product_data;?>" />
                 </div>  
 
                 <div class="form-group">
@@ -64,7 +64,7 @@
                       <option value="<?php echo $v['size_id']; ?>"<?php if($v['size_id'] == $size_data) { echo 'selected="selected"'; } ?>><?php echo $v['size_name']; ?></option>
                     <?php endforeach ?>
                   </select>
-                  <input type="hidden" name="size_id" value="<?php echo $v['size_id'];?>" />
+                  <input type="hidden" name="size_id" value="<?php echo $size_data;?>" />
                 </div>
 
                 <div class="form-group">
@@ -75,7 +75,7 @@
                        <option value="<?php echo $v['color_id']; ?>"<?php if($v['color_id'] == $color_data) { echo 'selected="selected"'; } ?>><?php echo $v['color_name']; ?></option>
                     <?php endforeach ?>
                   </select>
-                  <input type="hidden" name="color_id" value="<?php echo $v['color_id'];?>" />
+                  <input type="hidden" name="color_id" value="<?php echo $color_data;?>" />
                 </div>
 
                 <div class="form-group">
@@ -86,7 +86,7 @@
                       <option value="<?php echo $v['uom_id']; ?>"<?php if($v['uom_id'] == $uom_data) { echo 'selected="selected"'; } ?>><?php echo $v['uom_name']; ?></option>
                     <?php endforeach ?>
                   </select>
-                  <input type="hidden" name="uom_id" value="<?php echo $v['uom_id'];?>" />
+                  <input type="hidden" name="uom_id" value="<?php echo $uom_data;?>" />
                 </div>
 
                 <div class="form-group">
